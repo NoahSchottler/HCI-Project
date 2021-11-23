@@ -1,4 +1,70 @@
-<h1>Type your message below</h1>
+    <div class="row">
+      <div class="col-sm">
+        <div class="d-flex justify-content-center">
+          <div class="functionBox">
+            <h1>User Review:</h1>
+            <textarea name="userReview" id="userReview" cols="50" rows="10" [(ngModel)]="userReview" placeholder="Enter your review here..."></textarea>
+            <br><div class="text-right"><button (click)="submitReview(userReview)">Submit Review</button></div>
+            <!-- Space for Test Printing -->
+            <!-- <p>{{userWords[0]}}  {{userWords[3]}}</p> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-sm">
+        <div class="d-flex justify-content-center">
+            <div class="functionBox">
+              <h1>Results</h1>
+              <p>Rating: {{overallRating}}/100 ({{thumbsValue}})</p>
+              <table>
+                <tr>
+                  <td>Word</td>
+                  <td>Favorable Chance</td>
+                  <td>Unfavorable Chance</td>
+                </tr>
+                <tr *ngFor="let word of words">
+                  <td>{{word.name}}</td>
+                  <td>{{word.favorable}}</td>
+                  <td>{{word.unfavorable}}</td>
+                </tr>
+              </table>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 20%;">
+      <div class="col-sm"></div>
+      <div class="col-sm">
+        <div class="d-flex justify-content-center">
+          <div class="functionBox">
+            <input class="pl-3 pr-3" type="text" placeholder="search for specific words..." [(ngModel)] = "searchingWord"><button class="ml-4" (click)="searchWord(searchingWord)">Search</button>
+            <p *ngIf="searchedFlag">Results for "{{searchedWord}}"</p>
+            <p *ngIf="!searchedFlag">Results will show below</p> 
+
+            <div class="row">
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-8"><p>Favorable: </p></div><div class="col-4"><p>{{searchedFavorable}}</p></div>
+                </div>
+                <div class="row">
+                  <div class="col-8"><p>Unfavorable: </p></div><div class="col-4"><p>{{searchedUnfavorable}}</p></div>
+                </div>
+              </div>
+              <div class="col mr-2 mb-2 p-3" style="border-style: solid;">
+                <p *ngIf="searchedFlag">"{{searchedWord}}" appeared in {{appearedCount}} reviews</p>
+                <p *ngIf="searchedFlag">{{appearedFavorableCount}} Favorable Reviews</p>
+                <p *ngIf="searchedFlag">{{appearedUnfavorableCount}} Unfavorable Reviews</p>
+              </div>
+            </div>
+            
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  
+
+<!-- <h1>Type your message below</h1>
 <textarea name="" id="" cols="30" rows="10"></textarea>
 <div>
   <h1>Results</h1>
@@ -15,4 +81,4 @@
       <td>0.1225</td>
     </tr>
   </table>
-</div>
+</div> -->
