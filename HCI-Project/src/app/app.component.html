@@ -5,7 +5,8 @@
             <h1>User Review:</h1>
             <textarea name="userReview" id="userReview" cols="50" rows="10" [(ngModel)]="userReview" placeholder="Enter your review here..."></textarea>
             <br><div class="text-right"><button (click)="submitReview(userReview)">Submit Review</button></div>
-            <!-- <p>{{submittedReview}}</p> -->
+            <!-- Space for Test Printing -->
+            <!-- <p>{{userWords[0]}}  {{userWords[3]}}</p> -->
           </div>
         </div>
       </div>
@@ -13,7 +14,7 @@
         <div class="d-flex justify-content-center">
             <div class="functionBox">
               <h1>Results</h1>
-              <p>Rating: 75/100 (Positive)</p>
+              <p>Rating: {{overallRating}}/100 ({{thumbsValue}})</p>
               <table>
                 <tr>
                   <td>Word</td>
@@ -35,7 +36,28 @@
       <div class="col-sm">
         <div class="d-flex justify-content-center">
           <div class="functionBox">
-            <input type="text" placeholder="search for specific words..."><button>Search</button>
+            <input class="pl-3 pr-3" type="text" placeholder="search for specific words..." [(ngModel)] = "searchingWord"><button class="ml-4" (click)="searchWord(searchingWord)">Search</button>
+            <p *ngIf="searchedFlag">Results for "{{searchedWord}}"</p>
+            <p *ngIf="!searchedFlag">Results will show below</p> 
+
+            <div class="row">
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-8"><p>Favorable: </p></div><div class="col-4"><p>{{searchedFavorable}}</p></div>
+                </div>
+                <div class="row">
+                  <div class="col-8"><p>Unfavorable: </p></div><div class="col-4"><p>{{searchedUnfavorable}}</p></div>
+                </div>
+              </div>
+              <div class="col mr-2 mb-2 p-3" style="border-style: solid;">
+                <p *ngIf="searchedFlag">"{{searchedWord}}" appeared in {{appearedCount}} reviews</p>
+                <p *ngIf="searchedFlag">{{appearedFavorableCount}} Favorable Reviews</p>
+                <p *ngIf="searchedFlag">{{appearedUnfavorableCount}} Unfavorable Reviews</p>
+              </div>
+            </div>
+            
+
+
           </div>
         </div>
       </div>
