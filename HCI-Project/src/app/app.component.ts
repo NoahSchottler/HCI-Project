@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Word } from './Word';
+import NaiveBayesClassifier from "naive-bayes-classifier";
+import {LoaddataService} from './loaddata.service';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +9,9 @@ import { Word } from './Word';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  constructor(private service: LoaddataService) {}
   title = 'HCI-Project';
+  nb = new NaiveBayesClassifier();
 
 
   //-----USER REVIEW SECTION VALUES----------//
@@ -21,15 +25,12 @@ export class AppComponent {
   userWords: Array<string> = [];
 
   //submits user review and splits each word into the userWords array
-  //CASE
   submitReview(review: string){
     this.submittedReview = review;
     this.userWords = this.submittedReview.split(' ');
+    this.classify(this.submittedReview);
   }
   //-----------------------------------------//
-
-
-
 
   //---------RESULTS SECTION VALUES-------------//
   //assign the overal rating of the user submitted review
@@ -46,11 +47,60 @@ export class AppComponent {
   ];
   //-------------------------------------------//
 
+  async train() {
+    // const dumbData = [
+    //   {category:"1", text:"good great awesome cool"},
+    //   {category:"1", text:"sweet nice like great"},
+    //   {category:"1", text:"fun like funny enjoy"},
+    //   {category:"0", text:"bad dislike angry"},
+    //   {category:"0", text:"unfunny sad pathetic"},
+    //   {category:"0", text:"lame sad boring angry"},
+    // ];
+    //
+    // this.nb.train(dumbData);
 
+    let data = this.GetTrainingData();
+    await data.then(res => {
+      this.nb.train(res);
+    });
+  }
+
+  classify(input: string) {
+    this.train().then(r => {
+      console.log('Data Trained!!');
+      console.log('Starting Classification...');
+      console.log(this.nb.categorize(input));
+    });
+  }
+
+  async GetTrainingData(): Promise<Object[]> {
+    let TrainingData: Object[] = [];
+    let rawData = this.service.getData();
+    await rawData.then((res) => {
+      let finalData: string[] = [];
+      let stringData: string[] = res.split('\n');
+      stringData.forEach((value, index) => {
+        // @ts-ignore
+        stringData[index] = value.split('\t');
+      });
+
+      // Create the objects for training
+      stringData.forEach(val => {
+        let obj = {
+          category: val[0],
+          text: val[1],
+        };
+        if(obj.text != '' && obj.category != ''){
+          TrainingData.push(obj);
+        }
+      });
+    });
+    return TrainingData;
+  }
 
 
   //-----------SEARCH WORD SECTION-----------//
-  
+
   //keeps a p element from not showing if the user hasn't searched a word doesn't exist
   //CASE
   searchedFlag = false;
@@ -78,5 +128,5 @@ export class AppComponent {
   appearedFavorableCount = 50;
   //number of unfavorable reviews the searched word has appeared in
   appearedUnfavorableCount = 50;
-  
+
 }
