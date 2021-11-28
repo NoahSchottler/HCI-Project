@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Word } from './Word';
+import NaiveBayesClassifier from "naive-bayes-classifier";
 
 @Component({
   selector: 'app-root',
@@ -46,11 +47,36 @@ export class AppComponent {
   ];
   //-------------------------------------------//
 
+  classify () {
+    let nb = new NaiveBayesClassifier();
+    // test dataset
+    let trainArray = [{
+      category: "1",
+      text: "a b c d e"
+    },{
+      category: "1",
+      text: "b, c,d e"
+    },{
+      category: "1",
+      text: "a.e f c c e a"
+    },{
+      category: "2",
+      text: "m z x t a y x"
+    },{
+      category: "2",
+      text: "x t m"
+    },{
+      category: "2",
+      text: "b t x"
+    }];
+    nb.train(trainArray);
 
+    console.log(nb.categorize(' a e f c'));
+  }
 
 
   //-----------SEARCH WORD SECTION-----------//
-  
+
   //keeps a p element from not showing if the user hasn't searched a word doesn't exist
   //CASE
   searchedFlag = false;
@@ -78,5 +104,5 @@ export class AppComponent {
   appearedFavorableCount = 50;
   //number of unfavorable reviews the searched word has appeared in
   appearedUnfavorableCount = 50;
-  
+
 }

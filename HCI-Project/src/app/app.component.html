@@ -4,7 +4,7 @@
           <div class="functionBox">
             <h1>User Review:</h1>
             <textarea name="userReview" id="userReview" cols="50" rows="10" [(ngModel)]="userReview" placeholder="Enter your review here..."></textarea>
-            <br><div class="text-right"><button (click)="submitReview(userReview)">Submit Review</button></div>
+            <br><div class="text-right"><button (click)="classify()">Submit Review</button></div>
             <!-- Space for Test Printing -->
             <!-- <p>{{userWords[0]}}  {{userWords[3]}}</p> -->
           </div>
@@ -38,7 +38,7 @@
           <div class="functionBox">
             <input class="pl-3 pr-3" type="text" placeholder="search for specific words..." [(ngModel)] = "searchingWord"><button class="ml-4" (click)="searchWord(searchingWord)">Search</button>
             <p *ngIf="searchedFlag">Results for "{{searchedWord}}"</p>
-            <p *ngIf="!searchedFlag">Results will show below</p> 
+            <p *ngIf="!searchedFlag">Results will show below</p>
 
             <div class="row">
               <div class="col-6">
@@ -55,14 +55,14 @@
                 <p *ngIf="searchedFlag">{{appearedUnfavorableCount}} Unfavorable Reviews</p>
               </div>
             </div>
-            
+
 
 
           </div>
         </div>
       </div>
     </div>
-  
+
 
 <!-- <h1>Type your message below</h1>
 <textarea name="" id="" cols="30" rows="10"></textarea>
