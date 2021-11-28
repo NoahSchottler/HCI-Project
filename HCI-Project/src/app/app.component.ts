@@ -19,13 +19,15 @@ export class AppComponent {
   submittedReview: string = '';
 
   //A list of seperated words from user submitted review
-  userWords: Array<string> = [];
+  userWords: string = ''; // TODO Algorithm currently can process entire strings and with ' ' as delimiter
 
   //submits user review and splits each word into the userWords array
   //CASE
   submitReview(review: string){
     this.submittedReview = review;
-    this.userWords = this.submittedReview.split(' ');
+    // this.userWords = this.submittedReview.split(' '); TODO we may want to change this later if we decide to use array
+    this.userWords = this.submittedReview;
+    this.classify(this.userWords);
   }
   //-----------------------------------------//
 
@@ -47,31 +49,19 @@ export class AppComponent {
   ];
   //-------------------------------------------//
 
-  classify () {
+  classify (input: string) {
     let nb = new NaiveBayesClassifier();
-    // test dataset
-    let trainArray = [{
-      category: "1",
-      text: "a b c d e"
-    },{
-      category: "1",
-      text: "b, c,d e"
-    },{
-      category: "1",
-      text: "a.e f c c e a"
-    },{
-      category: "2",
-      text: "m z x t a y x"
-    },{
-      category: "2",
-      text: "x t m"
-    },{
-      category: "2",
-      text: "b t x"
-    }];
-    nb.train(trainArray);
 
-    console.log(nb.categorize(' a e f c'));
+    // Category defines 1 (Positive) or 0 (Negative)
+    let trainArray = [
+      {category: "1", text:"good great awesome cool"},
+      {category:"1", text:"sweet nice like great"},
+      {category:"1", text:"fun like funny enjoy"},
+      {category:"0", text:"bad dislike angry"},
+      {category:"0", text:"unfunny sad pathetic"},
+      {category:"0", text:"lame sad boring angry"}];
+    nb.train(trainArray);
+    console.log(nb.categorize(input));
   }
 
 
