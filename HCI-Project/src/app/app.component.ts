@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Word } from './Word';
 import NaiveBayesClassifier from "naive-bayes-classifier";
+import {TrainingData} from './Word';
 
 @Component({
   selector: 'app-root',
@@ -19,15 +20,22 @@ export class AppComponent {
   submittedReview: string = '';
 
   //A list of seperated words from user submitted review
-  userWords: string = ''; // TODO Algorithm currently can process entire strings and with ' ' as delimiter
+  userWords: Array<string> = [];
 
   //submits user review and splits each word into the userWords array
   //CASE
   submitReview(review: string){
     this.submittedReview = review;
-    // this.userWords = this.submittedReview.split(' '); TODO we may want to change this later if we decide to use array
-    this.userWords = this.submittedReview;
-    this.classify(this.userWords);
+    this.userWords = this.submittedReview.split(' ');
+    this.classify(this.submittedReview);
+  }
+
+  uploadDocument(file: File) {
+    let fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      console.log(fileReader.result);
+    }
+    fileReader.readAsText(file);
   }
   //-----------------------------------------//
 
@@ -51,16 +59,7 @@ export class AppComponent {
 
   classify (input: string) {
     let nb = new NaiveBayesClassifier();
-
-    // Category defines 1 (Positive) or 0 (Negative)
-    let trainArray = [
-      {category: "1", text:"good great awesome cool"},
-      {category:"1", text:"sweet nice like great"},
-      {category:"1", text:"fun like funny enjoy"},
-      {category:"0", text:"bad dislike angry"},
-      {category:"0", text:"unfunny sad pathetic"},
-      {category:"0", text:"lame sad boring angry"}];
-    nb.train(trainArray);
+    nb.train(TrainingData);
     console.log(nb.categorize(input));
   }
 
