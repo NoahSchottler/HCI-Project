@@ -16,6 +16,7 @@ export class AppComponent {
   probability = -1;
   category = '';
   userReview = '';
+  IsWait = false;
   //the favorable value for the searched word
   searchedConfidence = 0.00;
   searchedCategory = "";
@@ -51,6 +52,7 @@ export class AppComponent {
    * @param review text grabbed from input textbox
    */
   submitReview(review: string){
+    this.IsWait = true;
     this.submittedReview = review;
     if(!this.trained){
       this.train().then(r => {
@@ -80,6 +82,7 @@ export class AppComponent {
    */
   classify(input: string) {
     console.log('Starting Classification');
+    this.IsWait = false;
     let classification = this.nb.categorize(input);
     this.probability = classification.probability;
     if(classification.category == "1"){

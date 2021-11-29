@@ -4,10 +4,11 @@
           <div class="functionBox">
             <h1>User Review:</h1>
             <textarea name="userReview" id="userReview" cols="50" rows="10" [(ngModel)]="userReview" placeholder="Enter your review here..."></textarea>
+            <div>
+              <p *ngIf="IsWait">Results loading...</p>
+            </div>
             <br><div class="text-right"><button (click)="submitReview(userReview)">Submit Review</button></div>
             <br><div class="text-right"><button (click)="train()">Train on Data</button></div>
-            <!-- Space for Test Printing -->
-            <!-- <p>{{userWords[0]}}  {{userWords[3]}}</p> -->
           </div>
         </div>
       </div>
