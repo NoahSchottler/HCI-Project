@@ -20,13 +20,13 @@
               <table>
                 <tr>
                   <td>Word</td>
-                  <td>Favorable Chance</td>
-                  <td>Unfavorable Chance</td>
+                  <td>Category</td>
+                  <td>Confidence</td>
                 </tr>
                 <tr *ngFor="let word of words">
                   <td>{{word.name}}</td>
-                  <td>{{word.favorable}}</td>
-                  <td>{{word.unfavorable}}</td>
+                  <td>{{word.category}}</td>
+                  <td>{{word.confidence}}</td>
                 </tr>
               </table>
             </div>

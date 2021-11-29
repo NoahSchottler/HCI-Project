@@ -33,7 +33,6 @@ export class AppComponent {
    */
   submitReview(review: string){
     this.submittedReview = review;
-    this.userWords = this.submittedReview.split(' ');
     if(!this.trained){
       this.train().then(r => {
         this.classify(this.submittedReview);
@@ -47,11 +46,7 @@ export class AppComponent {
 
   //CASE
   //a custom assignment to the list the table will show. I will split this up later this week.
-  words: Word[] = [
-    {name: 'apple', favorable: 65.74, unfavorable: 34.26},
-    {name: 'noah', favorable: 65.74, unfavorable: 34.26},
-    {name: 'test', favorable: 65.74, unfavorable: 34.26}
-  ];
+  words: Word[] = [];
   //-------------------------------------------//
 
   /**
@@ -81,6 +76,17 @@ export class AppComponent {
       this.category = 'Negative';
     }
     console.log('Confidence: ' + (100 + this.probability) + "%");
+    this.userWords = this.submittedReview.split(' ');
+    this.words = [];
+    this.userWords.forEach(value => {
+      let result = this.nb.categorize(value)
+      this.words.push({
+        name: value,
+        category: result.category,
+        confidence: 100 + result.probability,
+      });
+    }
+    );
   }
 
   /**

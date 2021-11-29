@@ -1,7 +1,7 @@
 export interface Word{
     name: string;
-    favorable: number;
-    unfavorable: number;
+    category: string;
+    confidence: number;
 }
 // Category defines 1 (Positive) or 0 (Negative)
 export const TrainingData = [
