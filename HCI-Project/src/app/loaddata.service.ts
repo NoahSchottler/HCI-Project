@@ -15,7 +15,7 @@ export class LoaddataService {
   }
 
   async loadData() {
-    return await this.httpClient.get<string>('assets/data.txt',{ responseType: 'text' as 'json'}).toPromise();
+    return await this.httpClient.get<string>('assets/data_formatted.txt',{ responseType: 'text' as 'json'}).toPromise();
   }
 
   async getData() {
