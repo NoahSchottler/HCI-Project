@@ -9,23 +9,42 @@ import {LoaddataService} from './loaddata.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(private service: LoaddataService) {}
+  nb = new NaiveBayesClassifier();
+  TrainingData: Object[] = [];
   title = 'HCI-Project';
   trained = false;
   probability = -1;
   category = '';
-  nb = new NaiveBayesClassifier();
-
-
-  //-----USER REVIEW SECTION VALUES----------//
-  //CASE
   userReview = '';
-
+  //the favorable value for the searched word
+  searchedConfidence = 0.00;
+  searchedCategory = "";
+  //number of reviews the searched word has appeared in
+  appearedCount = 100;
+  //number of favorable reviews the searched word has appeared in
+  appearedFavorableCount = 50;
+  //number of unfavorable reviews the searched word has appeared in
+  appearedUnfavorableCount = 50;
+  //keeps a p element from not showing if the user hasn't searched a word doesn't exist
+  //CASE
+  searchedFlag = false;
+  //CASE
+  searchingWord = '';
+  //the word the user searched
+  searchedWord = '';
+  //CASE
+  //a custom assignment to the list the table will show. I will split this up later this week.
+  words: Word[] = [];
   //This is your value for submitted Reviews
   submittedReview: string = '';
-
   //A list of seperated words from user submitted review
   userWords: Array<string> = [];
+
+  /**
+   * Instantiates service
+   * @param service
+   */
+  constructor(private service: LoaddataService) {}
 
   /**
    * submits user review and splits each word into the userWords array
@@ -44,11 +63,6 @@ export class AppComponent {
     }
   }
 
-  //CASE
-  //a custom assignment to the list the table will show. I will split this up later this week.
-  words: Word[] = [];
-  //-------------------------------------------//
-
   /**
    * Trains data from text file.
    */
@@ -56,6 +70,7 @@ export class AppComponent {
     let data = this.GetTrainingData();
     await data.then(res => {
       this.nb.train(res);
+      console.log('Training Completed');
     });
   }
 
@@ -64,7 +79,7 @@ export class AppComponent {
    * @param input the string to classify
    */
   classify(input: string) {
-    console.log('Starting Classification...');
+    console.log('Starting Classification');
     let classification = this.nb.categorize(input);
     this.probability = classification.probability;
     if(classification.category == "1"){
@@ -85,7 +100,7 @@ export class AppComponent {
         category: result.category,
         confidence: 100 + result.probability,
       });
-    }
+      }
     );
   }
 
@@ -94,7 +109,7 @@ export class AppComponent {
    * @constructor
    */
   async GetTrainingData(): Promise<Object[]> {
-    let TrainingData: Object[] = [];
+    let TrainingDataLocal: Object[] = [];
     let rawData = this.service.getData();
 
     // Grabbing data from service is asynchronous, we wait for the resolution
@@ -116,42 +131,55 @@ export class AppComponent {
           text: val[1],
         };
         if(obj.text != '' && obj.category != ''){
-          TrainingData.push(obj);
+          TrainingDataLocal.push(obj);
         }
       });
     });
-    return TrainingData;
+    this.TrainingData = TrainingDataLocal;
+    return TrainingDataLocal;
   }
 
-
-  //-----------SEARCH WORD SECTION-----------//
-
-  //keeps a p element from not showing if the user hasn't searched a word doesn't exist
-  //CASE
-  searchedFlag = false;
-  //CASE
-  searchingWord = '';
-
-
-  //the word the user searched
-  searchedWord = '';
-
-  //CASE
-  searchWord(searched: string){
-    this.searchedWord = searched;
+  searchWord(input: string){
+    this.searchedWord = input;
     this.searchedFlag = true;
+    let result = this.nb.categorize(input)
+    this.searchedConfidence = 100 + result.probability;
+    if(result.category == "1"){
+      this.searchedCategory = 'Positive';
+    }
+    if(result.category == "0"){
+      this.searchedCategory = 'Negative';
+    }
+    let localTrainingData: { category: string; text: string };
+    let count = 0;
+    let negCount = 0;
+    let posCount = 0;
+    this.TrainingData.forEach(value => {
+      let arrayText: any;
+      // @ts-ignore
+      arrayText = value.text.split(' ');
+      // @ts-ignore
+      if(value.category == "1"){
+        arrayText.forEach((value: string) => {
+          if (value == input){
+            count++;
+            posCount++;
+          }
+        })
+      }
+      // @ts-ignore
+      if(value.category == "0"){
+        arrayText.forEach((value: string) => {
+          if (value == input){
+            count++;
+            negCount++;
+          }
+        })
+      }
+
+    });
+    this.appearedCount = count;
+    this.appearedFavorableCount = posCount;
+    this.appearedUnfavorableCount = negCount;
   }
-
-  //the favorable value for the searched word
-  searchedFavorable = 0.00;
-  //the unFavorable value for the searched word
-  searchedUnfavorable = 0.00;
-
-  //number of reviews the searched word has appeared in
-  appearedCount = 100;
-  //number of favorable reviews the searched word has appeared in
-  appearedFavorableCount = 50;
-  //number of unfavorable reviews the searched word has appeared in
-  appearedUnfavorableCount = 50;
-
 }
