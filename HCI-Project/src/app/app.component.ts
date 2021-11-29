@@ -11,6 +11,9 @@ import {LoaddataService} from './loaddata.service';
 export class AppComponent {
   constructor(private service: LoaddataService) {}
   title = 'HCI-Project';
+  trained = false;
+  probability = -1;
+  category = '';
   nb = new NaiveBayesClassifier();
 
 
@@ -24,19 +27,23 @@ export class AppComponent {
   //A list of seperated words from user submitted review
   userWords: Array<string> = [];
 
-  //submits user review and splits each word into the userWords array
+  /**
+   * submits user review and splits each word into the userWords array
+   * @param review text grabbed from input textbox
+   */
   submitReview(review: string){
     this.submittedReview = review;
     this.userWords = this.submittedReview.split(' ');
-    this.classify(this.submittedReview);
+    if(!this.trained){
+      this.train().then(r => {
+        this.classify(this.submittedReview);
+        this.trained = true;
+      });
+    }
+    else{
+      this.classify(this.submittedReview);
+    }
   }
-  //-----------------------------------------//
-
-  //---------RESULTS SECTION VALUES-------------//
-  //assign the overal rating of the user submitted review
-  overallRating = 12;
-  //this should either be positive or negative, depending on the review.
-  thumbsValue = 'Negative';
 
   //CASE
   //a custom assignment to the list the table will show. I will split this up later this week.
@@ -47,44 +54,56 @@ export class AppComponent {
   ];
   //-------------------------------------------//
 
+  /**
+   * Trains data from text file.
+   */
   async train() {
-    // const dumbData = [
-    //   {category:"1", text:"good great awesome cool"},
-    //   {category:"1", text:"sweet nice like great"},
-    //   {category:"1", text:"fun like funny enjoy"},
-    //   {category:"0", text:"bad dislike angry"},
-    //   {category:"0", text:"unfunny sad pathetic"},
-    //   {category:"0", text:"lame sad boring angry"},
-    // ];
-    //
-    // this.nb.train(dumbData);
-
     let data = this.GetTrainingData();
     await data.then(res => {
       this.nb.train(res);
     });
   }
 
+  /**
+   * Given the input string, returns the result of the classification.
+   * @param input the string to classify
+   */
   classify(input: string) {
-    this.train().then(r => {
-      console.log('Data Trained!!');
-      console.log('Starting Classification...');
-      console.log(this.nb.categorize(input));
-    });
+    console.log('Starting Classification...');
+    let classification = this.nb.categorize(input);
+    this.probability = classification.probability;
+    if(classification.category == "1"){
+      console.log('Classification: Positive (Fresh) Review');
+      this.category = 'Positive';
+    }
+    if(classification.category == "0"){
+      console.log('Classification: Negative (Rotten) Review');
+      this.category = 'Negative';
+    }
+    console.log('Confidence: ' + (100 + this.probability) + "%");
   }
 
+  /**
+   * Retrieves training data from service. Service grabs training data from src/assets/data.txt
+   * @constructor
+   */
   async GetTrainingData(): Promise<Object[]> {
     let TrainingData: Object[] = [];
     let rawData = this.service.getData();
+
+    // Grabbing data from service is asynchronous, we wait for the resolution
     await rawData.then((res) => {
-      let finalData: string[] = [];
+
+      // Divide input data into an array where each row is a record
       let stringData: string[] = res.split('\n');
+
+      // Foreach record, break into two parts - Classification Label, and Text
       stringData.forEach((value, index) => {
         // @ts-ignore
         stringData[index] = value.split('\t');
       });
 
-      // Create the objects for training
+      // Create the objects for training - training function only recognizes key value pairs
       stringData.forEach(val => {
         let obj = {
           category: val[0],
