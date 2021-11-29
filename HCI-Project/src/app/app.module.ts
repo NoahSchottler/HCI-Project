@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 
 import {Injector} from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 export let InjectorInstance: Injector;
 
@@ -19,6 +21,8 @@ export let InjectorInstance: Injector;
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    MatProgressSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
