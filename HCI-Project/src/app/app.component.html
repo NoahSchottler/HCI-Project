@@ -1,28 +1,63 @@
-    <div class="row">
+    <div class="row" style="margin-top: 8rem;">
+
       <div class="col-sm">
         <div class="d-flex justify-content-center">
           <div class="functionBox">
             <h1>User Review:</h1>
-            <textarea name="userReview" id="userReview" cols="50" rows="10" [(ngModel)]="userReview" placeholder="Enter your review here..."></textarea>
+            <textarea name="userReview" id="userReview" cols="56" rows="10" [(ngModel)]="userReview" placeholder="Enter your review here..."></textarea>
             <div>
               <p *ngIf="IsWait">Results loading...</p>
             </div>
-            <br><div class="text-right"><button (click)="submitReview(userReview)">Submit Review</button></div>
-            <br><div class="text-right"><button (click)="train()">Train on Data</button></div>
+            <br><div class="text-right"><button (click)="submitReview(userReview)">Submit Review</button><button (click)="train()" style="margin-left: 1rem;">Train on Data</button></div>
           </div>
         </div>
+
+        <div class="col-sm">
+          <div class="d-flex justify-content-center">
+            <div class="functionBox">
+              <input class="pl-3 pr-3" type="text" placeholder="search for specific words..." [(ngModel)] = "searchingWord"><button class="ml-4" (click)="searchWord(searchingWord)">Search</button>
+              <p *ngIf="searchedFlag">Results for "{{searchedWord}}"</p>
+              <p *ngIf="!searchedFlag">Results will show below</p>
+  
+              <div class="row">
+                <div class="col-6">
+                  <br>
+                  <div class="row">
+                    <div class="col-6"><p>Confidence: </p></div><div class="col-4"><p>{{searchedConfidence}}</p></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-6"><p>Category: </p></div><div class="col-4"><p>{{searchedCategory}}</p></div>
+                  </div>
+                </div>
+                <div class="col mr-2 mb-2 p-3" style="border-style: solid; height: 11rem;">
+                  <p *ngIf="searchedFlag">"{{searchedWord}}" appeared in {{appearedCount}} reviews</p>
+                  <p *ngIf="searchedFlag">{{appearedFavorableCount}} Favorable Reviews</p>
+                  <p *ngIf="searchedFlag">{{appearedUnfavorableCount}} Unfavorable Reviews</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
+
+
       <div class="col-sm">
         <div class="d-flex justify-content-center">
             <div class="functionBox">
               <h1>Results</h1>
-              <p>Confidence: {{100 + probability}}/100</p>
+              <p>Confidence: {{roundedConfidence}}/100</p>
               <p>Category: {{category}}</p>
               <table>
                 <tr>
                   <td>Word</td>
                   <td>Category</td>
                   <td>Confidence</td>
+                </tr>
+                <tr *ngIf="notSubmitted">
+                  <td>. . .</td>
+                  <td>. . .</td>
+                  <td>. . .</td>
                 </tr>
                 <tr *ngFor="let word of words">
                   <td>{{word.name}}</td>
@@ -33,38 +68,13 @@
             </div>
         </div>
       </div>
+
+
     </div>
-    <div class="row" style="margin-top: 20%;">
+    <!-- <div class="row">
+      
       <div class="col-sm"></div>
-      <div class="col-sm">
-        <div class="d-flex justify-content-center">
-          <div class="functionBox">
-            <input class="pl-3 pr-3" type="text" placeholder="search for specific words..." [(ngModel)] = "searchingWord"><button class="ml-4" (click)="searchWord(searchingWord)">Search</button>
-            <p *ngIf="searchedFlag">Results for "{{searchedWord}}"</p>
-            <p *ngIf="!searchedFlag">Results will show below</p>
-
-            <div class="row">
-              <div class="col-6">
-                <div class="row">
-                  <div class="col-8"><p>Confidence: </p></div><div class="col-4"><p>{{searchedConfidence}}</p></div>
-                </div>
-                <div class="row">
-                  <div class="col-8"><p>Category: </p></div><div class="col-4"><p>{{searchedCategory}}</p></div>
-                </div>
-              </div>
-              <div class="col mr-2 mb-2 p-3" style="border-style: solid;">
-                <p *ngIf="searchedFlag">"{{searchedWord}}" appeared in {{appearedCount}} reviews</p>
-                <p *ngIf="searchedFlag">{{appearedFavorableCount}} Favorable Reviews</p>
-                <p *ngIf="searchedFlag">{{appearedUnfavorableCount}} Unfavorable Reviews</p>
-              </div>
-            </div>
-
-
-
-          </div>
-        </div>
-      </div>
-    </div>
+    </div> -->
 
 
 <!-- <h1>Type your message below</h1>

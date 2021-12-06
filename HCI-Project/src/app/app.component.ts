@@ -28,6 +28,8 @@ export class AppComponent {
   appearedUnfavorableCount = 50;
   //keeps a p element from not showing if the user hasn't searched a word doesn't exist
   //CASE
+  notSubmitted = true;
+  //CASE
   searchedFlag = false;
   //CASE
   searchingWord = '';
@@ -40,6 +42,10 @@ export class AppComponent {
   submittedReview: string = '';
   //A list of seperated words from user submitted review
   userWords: Array<string> = [];
+
+  //CASE
+  roundedConfidence = (Math.round((100+this.probability)*100)/100);
+  // Math.round( (100 + result.probability + Number.EPSILON)*100)/100;
 
   /**
    * Instantiates service
@@ -63,6 +69,7 @@ export class AppComponent {
     else{
       this.classify(this.submittedReview);
     }
+    this.notSubmitted = false;
   }
 
   /**
@@ -85,6 +92,7 @@ export class AppComponent {
     this.IsWait = false;
     let classification = this.nb.categorize(input);
     this.probability = classification.probability;
+    this.roundedConfidence = (Math.round((100+this.probability)*100)/100);
     if(classification.category == "1"){
       console.log('Classification: Positive (Fresh) Review');
       this.category = 'Positive';
@@ -146,7 +154,8 @@ export class AppComponent {
     this.searchedWord = input;
     this.searchedFlag = true;
     let result = this.nb.categorize(input)
-    this.searchedConfidence = 100 + result.probability;
+    // this.searchedConfidence = 100 + result.probability;
+    this.searchedConfidence = Math.round( (100 + result.probability + Number.EPSILON)*100)/100;
     if(result.category == "1"){
       this.searchedCategory = 'Positive';
     }
