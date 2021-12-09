@@ -12,14 +12,14 @@
               <br><div class="text-right"><button (click)="submitReview(userReview)">Submit Review</button><button (click)="train()" style="margin-left: 1rem;">Train on Data</button></div>
             </div>
           </div>
-  
+
           <div class="col-sm">
             <div class="d-flex justify-content-center">
               <div class="functionBox">
                 <input class="pl-3 pr-3" type="text" placeholder="search for specific words..." [(ngModel)] = "searchingWord"><button class="ml-4" (click)="searchWord(searchingWord)">Search</button>
                 <p *ngIf="searchedFlag">Results for "{{searchedWord}}"</p>
                 <p *ngIf="!searchedFlag">Results will show below</p>
-    
+
                 <div class="row">
                   <div class="col-6">
                     <br>
@@ -39,10 +39,10 @@
               </div>
             </div>
           </div>
-  
+
         </div>
-  
-  
+
+
         <div class="col-sm">
           <div class="d-flex justify-content-center">
               <div class="functionBox" *ngIf="!notSubmitted">
@@ -72,25 +72,81 @@
           <div class="col-sm">
             <div class="d-flex justify-content-center">
               <div class="functionBox">
-                <h2>Info Box</h2>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perferendis culpa facere possimus ratione, consectetur nemo qui quam facilis nam quasi ullam repellendus natus, eum amet tenetur id rem eligendi? Obcaecati.</p>
+                <h2>About Naive Bayes</h2>
+                <p>Naive Bayes is a classification algorithm. It works by first observing records of training data, taking notes on the properties/characteristics of each record, then builds a set of probabilities assigned to each of the properties present in the training data.</p>
+
+                <p>Text classification is possible with Naive Bayes since it considers each word in a record to be "independent". We know in english that this isn't true, pairs of words contain much more information than independent words. However, creating a vocabulary consisting of not just
+                individual words but also their pairs significantly increases the size of the vocabulary present, which decreased classifier training performance. For the purposes of this project, the vocabulary was generated from independant words.</p>
+
+                <p>Training the classifier is separated into three steps:</p>
+                <ol>
+                  <li>Iterate through all the records to build a vocabulary.</li>
+                  <li>Iterate through all the records to generate probabilities.</li>
+                  <li>Pass those probabilities through the classifier for training.</li>
+                </ol>
+                <h3>Vocabulary Generation</h3>
+                <p>
+                  The vocabulary generation is done by iterating through the records compiling a list of all words. For example, the vocabulary generated from the following two records:
+                </p>
                 <ul>
-                  <li>Fill this box with instructions/explanations</li>
-                  <li>You could switch to numbered bulllets by changing the "ul" tag to "ol"</li>
-                  <li>Let me know if you'd like me to change anything!</li>
+                  <li>This was a great movie.</li>
+                  <li>Not a great movie.</li>
                 </ul>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim debitis, veniam, fuga perspiciatis reiciendis repellat aspernatur quae inventore recusandae in modi natus consectetur voluptate laborum veritatis maiores incidunt praesentium harum.</p>
+                <p>Would result in the vocabulary:</p>
+                <ul>
+                  <li>this, was, a, great, movie, not</li>
+                </ul>
+                <p>This step is important for building the probabilities, which are based on the properties (or words) present in the vocabulary.</p>
+                <h3>Generating Probabilities</h3>
+                <p>Now that the vocabulary is generated, we can generate probability records to pass to the classifier. Using the same records as the example above, the probabilities generated would be as follows:</p>
+                <table>
+                  <tr>
+                    <td></td>
+                    <td>CLASS LABEL</td>
+                    <td>this</td>
+                    <td>was</td>
+                    <td>a</td>
+                    <td>great</td>
+                    <td>movie</td>
+                    <td>not</td>
+                  </tr>
+                  <tr>
+                    <td>Record 0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>0</td>
+                  </tr>
+                  <tr>
+                    <td>Record 1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                  </tr>
+                </table>
+
+                <p>Notice in these records we are also including the Class Label, which is a column included in our dataset which categorizes the review text into either class 1 (positive) or class 0 (negative). This is essential for the classifier to distinguish between positive and negative probabilities.</p>
+                <h3>Training</h3>
+                <p>Now that we've generated our probabilities, we can train the classifier. We pass each record into our instance of the Naive Bayes classifier, which begins to record the occurrence of each word relative to the class label.</p>
+                <p>Once the training has observed every record, it now has a probability of a word appearing in a particular class label for every word present in the vocabulary. New records can now be tested by being passed through our classifier, but they must first be converted to probabilities in the same way that our testing data was. Once this process is complete, the classifications take very little time to complete since most of the computational load is during the training process.</p>
               </div>
             </div>
           </div>
         </div>
-  
-  
+
+
       </div>
     </div>
-    
+
     <!-- <div class="row">
-      
+
       <div class="col-sm"></div>
     </div> -->
 
