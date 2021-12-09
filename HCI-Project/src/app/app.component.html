@@ -45,7 +45,7 @@
   
         <div class="col-sm">
           <div class="d-flex justify-content-center">
-              <div class="functionBox">
+              <div class="functionBox" *ngIf="!notSubmitted">
                 <h1>Results</h1>
                 <p>Confidence: {{roundedConfidence}}/100</p>
                 <p>Category: {{category}}</p>
@@ -67,6 +67,21 @@
                   </tr>
                 </table>
               </div>
+          </div>
+
+          <div class="col-sm">
+            <div class="d-flex justify-content-center">
+              <div class="functionBox">
+                <h2>Info Box</h2>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perferendis culpa facere possimus ratione, consectetur nemo qui quam facilis nam quasi ullam repellendus natus, eum amet tenetur id rem eligendi? Obcaecati.</p>
+                <ul>
+                  <li>Fill this box with instructions/explanations</li>
+                  <li>You could switch to numbered bulllets by changing the "ul" tag to "ol"</li>
+                  <li>Let me know if you'd like me to change anything!</li>
+                </ul>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim debitis, veniam, fuga perspiciatis reiciendis repellat aspernatur quae inventore recusandae in modi natus consectetur voluptate laborum veritatis maiores incidunt praesentium harum.</p>
+              </div>
+            </div>
           </div>
         </div>
   
