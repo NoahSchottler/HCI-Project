@@ -4,12 +4,13 @@
         <div class="col-sm">
           <div class="d-flex justify-content-center">
             <div class="functionBox">
-              <h1>User Review:</h1>
+              <h1>Submit Text:</h1>
+              <p>Enter text in the area below, the classifier will attempt to predict the sentiment behind your input.</p>
               <textarea name="userReview" id="userReview" cols="56" rows="10" [(ngModel)]="userReview" placeholder="Enter your review here..."></textarea>
               <div>
                 <p *ngIf="IsWait">Results loading...</p>
               </div>
-              <br><div class="text-right"><button (click)="submitReview(userReview)">Submit Review</button><button (click)="train()" style="margin-left: 1rem;">Train on Data</button></div>
+              <br><div class="text-right"><button (click)="submitReview(userReview)">Submit Review</button></div>
             </div>
           </div>
 
