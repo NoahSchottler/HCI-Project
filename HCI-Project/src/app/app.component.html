@@ -4,19 +4,22 @@
         <div class="col-sm">
           <div class="d-flex justify-content-center">
             <div class="functionBox">
-              <h1>User Review:</h1>
+              <h1>Submit Text:</h1>
+              <p>Enter text in the area below, the classifier will attempt to predict the sentiment behind your input.</p>
               <textarea name="userReview" id="userReview" cols="56" rows="10" [(ngModel)]="userReview" placeholder="Enter your review here..."></textarea>
               <div>
                 <p *ngIf="IsWait">Results loading...</p>
               </div>
-              <br><div class="text-right"><button (click)="submitReview(userReview)">Submit Review</button><button (click)="train()" style="margin-left: 1rem;">Train on Data</button></div>
+              <br><div class="text-right"><button (click)="submitReview(userReview)">Submit Review</button></div>
             </div>
           </div>
 
           <div class="col-sm">
             <div class="d-flex justify-content-center">
               <div class="functionBox">
-                <input class="pl-3 pr-3" type="text" placeholder="search for specific words..." [(ngModel)] = "searchingWord"><button class="ml-4" (click)="searchWord(searchingWord)">Search</button>
+                <h1>Search for Specific Words:</h1>
+
+                <input class="pl-3 pr-3" type="text" placeholder="input specific words for detailed results..." [(ngModel)] = "searchingWord"><button class="ml-4" (click)="searchWord(searchingWord)">Search</button>
                 <p *ngIf="searchedFlag">Results for "{{searchedWord}}"</p>
                 <p *ngIf="!searchedFlag">Results will show below</p>
 
@@ -47,8 +50,8 @@
           <div class="d-flex justify-content-center">
               <div class="functionBox" *ngIf="!notSubmitted">
                 <h1>Results</h1>
+                <h3>Category: {{category}}</h3>
                 <p>Confidence: {{roundedConfidence}}/100</p>
-                <p>Category: {{category}}</p>
                 <table>
                   <tr>
                     <td>Word</td>
