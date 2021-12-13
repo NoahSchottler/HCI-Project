@@ -27,7 +27,14 @@ very efficient.</p>
 <p></p>
 
 <h1>Citations</h1>
-<p></p>
+<ul>
+<li><a href = "https://github.com/nicolas-gervais/rotten-tomatoes-dataset">Dataset: Rotten Tomatoes Reviews/Labels (Collected By Nicolas Gervais)</a></li>
+<li><a href="https://github.com/sleagon/bayes">Naive Bayes Classifier by sleagon</a></li>
+<li><a href="https://medium.com/analytics-vidhya/naive-bayes-classifier-for-text-classification-556fabaf252b">Aiyappan, J. (2019, September 8). Naive Bayes classifier for text classification. Medium.</a></a></li>
+<li><a href="https://sebastianraschka.com/Articles/2014_naive_bayes_1.html">Naive Bayes and text classification. Dr. Sebastian Raschka. (2014, October 4)</a></li>
+</ul>
+
+
 
 <h1>Link to Demo Video</h1>
 <p></p>
