@@ -2,6 +2,8 @@
 <h2>Final Project - Human Computer Interaction</h2>
 <p>Noah Schottler, Noah Case</p>
 
+<h1>How to Execute this Project</h1>
+<p>This app was built with Angular. To launch the project, download the source code, open a terminal within the "HCI-Project" directory, and execute the command "ng serve" from the terminal.</p>
 
 <h1>Functions</h1>
 <ul>
