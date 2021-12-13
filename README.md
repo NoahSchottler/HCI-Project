@@ -37,4 +37,5 @@ very efficient.</p>
 
 
 <h1>Link to Demo Video</h1>
-<p></p>
+<li><a href="https://www.youtube.com/watch?v=19Yttc4naGw">Human Computer Interactions Project Demo</a></li>
+<li><a href="https://github.com/NoahSchottler/HCI-Project">Link to GitHub Repository</a></li>
