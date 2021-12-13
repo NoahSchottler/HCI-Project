@@ -10,7 +10,7 @@
     background-color: #528AAE;
 }
 
-td{
+.regularTD{
     border-style: solid;
     padding-right: 2rem;
     padding-left: 2rem;
@@ -22,4 +22,10 @@ textarea{
 input{
     width: 80%;
     margin-bottom: 1rem;
+}
+
+td{
+    border-style: solid;
+    text-align: center;
+    width: 4rem;
 }
